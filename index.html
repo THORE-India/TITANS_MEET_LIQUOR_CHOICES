@@ -216,7 +216,7 @@
         </header>
 
         <!-- NOTE: Replace the action URL with your Google Form submission URL -->
-        <form id="liquorForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdXjEPF-rHnc6VL94oY5elxUVh_Ox5W_cM2OCUrvhpAzTzl0w/formResponse" method="POST" target="_hidden_iframe">
+        <form id="liquorForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdXjEPF-rHnc6VL94oY5elxUVh_Ox5W_cM2OCUrvhpAzTzl0w/formResponse" method="POST" target="_hidden_iframe" accept-charset="UTF-8">
             
             <!-- 1. Attendee Name -->
             <div class="form-group">
@@ -293,27 +293,40 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Other -->
-            <div class="form-group custom-choice-box">
-                <label for="custom_liquor">Other Preference</label>
-                <input type="text" id="custom_liquor" name="entry.280867174" value="" placeholder="Enter another liquor type or preference">
-            </div>
-
-            <!-- Submit Button -->
+<!-- Submit Button -->
             <button type="submit" class="btn-submit">Submit Preferences</button>
             <p class="info-text">Your preferences will sync instantly with the Titans Meet master dashboard.</p>
         </form>
     </div>
 
     <!-- Hidden iframe to prevent page redirection on form submit -->
-    <iframe name="_hidden_iframe" id="_hidden_iframe" style="display:none;" onload="if(submitted) {alert('Thank you! Your preferences have been successfully recorded.'); window.location.reload();}"></iframe>
+    <iframe name="_hidden_iframe" id="_hidden_iframe" style="display:none;" ></iframe>
 
     <script>
         let submitted = false;
-        document.getElementById('liquorForm').onsubmit = function() {
+
+        document.getElementById('liquorForm').addEventListener('submit', function(event) {
+            const selected = document.querySelectorAll(
+                'input[name="entry.280867174"]:checked'
+            );
+
+            if (selected.length === 0) {
+                event.preventDefault();
+                alert('Please select at least one preferred liquor type.');
+                return false;
+            }
+
             submitted = true;
-        };
+        });
+
+        // Google Forms loads the response inside the hidden iframe.
+        // The iframe's load event is used only after a real submission.
+        document.getElementById('_hidden_iframe').addEventListener('load', function() {
+            if (!submitted) return;
+
+            submitted = false;
+            alert('Thank you! Your preferences have been successfully recorded.');
+        });
 
         function toggleSelection(card, containerId) {
             const checkbox = card.querySelector('input[type="checkbox"]');
