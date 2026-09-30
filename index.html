@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titans Meet 2026 - Liquor Preferences</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            --gold: #d4af37;
+            --gold-hover: #f3e5ab;
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-light: #f5f5f5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 650px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+        }
+
+        p.subtitle {
+            font-size: 1rem;
+            color: #ccc;
+            font-style: italic;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--gold-hover);
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        select option {
+            background: #1f3642;
+            color: #fff;
+        }
+
+        .liquor-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 480px) {
+            .liquor-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .liquor-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .liquor-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .liquor-card.selected {
+            background: rgba(214, 175, 87, 0.15);
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .required-mark {
+            color: var(--gold);
+        }
+
+        .liquor-card input[type="checkbox"] {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            accent-color: var(--gold);
+            cursor: pointer;
+        }
+
+        .liquor-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .brand-input-container {
+            display: none;
+            margin-top: 10px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .custom-choice-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--gold);
+            color: #0f2027;
+            border: none;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background: var(--gold-hover);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .info-text {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-top: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Titans Meet 2026</h1>
+            <p class="subtitle">Curating the Perfect Bar Experience for the Team</p>
+        </header>
+
+        <!-- NOTE: Replace the action URL with your Google Form submission URL -->
+        <form id="liquorForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdXjEPF-rHnc6VL94oY5elxUVh_Ox5W_cM2OCUrvhpAzTzl0w/formResponse" method="POST" target="_hidden_iframe">
+            
+            <!-- 1. Attendee Name -->
+            <div class="form-group">
+                <label for="entry_name">Your Name <span style="color:#d4af37;">*</span></label>
+                <input type="text" id="entry_name" name="entry.1366170898" placeholder="Enter your full name" required>
+            </div>
+
+            <!-- 2. Preferred Liquor Types -->
+            <div class="form-group">
+                <label>Preferred Liquor Types <span style="color:#d4af37;">*</span></label>
+
+                <div class="liquor-grid">
+                    <!-- Whiskey -->
+                    <div class="liquor-card" onclick="toggleSelection(this, 'whiskey-brand-container')">
+                        <input type="checkbox" id="type_whiskey" name="entry.280867174" value="Whiskey" onclick="event.stopPropagation(); checkCard(this, 'whiskey-brand-container')">
+                        <span class="liquor-name">🥃 Whiskey</span>
+                        <div class="brand-input-container" id="whiskey-brand-container" onclick="event.stopPropagation();">
+                            <input type="text" name="entry.2046384810" placeholder="Whiskey Brand">
+                        </div>
+                    </div>
+
+                    <!-- Vodka -->
+                    <div class="liquor-card" onclick="toggleSelection(this, 'vodka-brand-container')">
+                        <input type="checkbox" id="type_vodka" name="entry.280867174" value="Vodka" onclick="event.stopPropagation(); checkCard(this, 'vodka-brand-container')">
+                        <span class="liquor-name">🍸 Vodka</span>
+                        <div class="brand-input-container" id="vodka-brand-container" onclick="event.stopPropagation();">
+                            <input type="text" name="entry.1937181047" placeholder="Vodka Brand">
+                        </div>
+                    </div>
+
+                    <!-- Gin -->
+                    <div class="liquor-card" onclick="toggleSelection(this, 'gin-brand-container')">
+                        <input type="checkbox" id="type_gin" name="entry.280867174" value="Gin" onclick="event.stopPropagation(); checkCard(this, 'gin-brand-container')">
+                        <span class="liquor-name">🌿 Gin</span>
+                        <div class="brand-input-container" id="gin-brand-container" onclick="event.stopPropagation();">
+                            <input type="text" name="entry.1330168225" placeholder="Gin Brand">
+                        </div>
+                    </div>
+
+                    <!-- Rum -->
+                    <div class="liquor-card" onclick="toggleSelection(this, 'rum-brand-container')">
+                        <input type="checkbox" id="type_rum" name="entry.280867174" value="Rum" onclick="event.stopPropagation(); checkCard(this, 'rum-brand-container')">
+                        <span class="liquor-name">🏴‍☠️ Rum</span>
+                        <div class="brand-input-container" id="rum-brand-container" onclick="event.stopPropagation();">
+                            <input type="text" name="entry.1812022994" placeholder="Rum Brand">
+                        </div>
+                    </div>
+
+                    <!-- Wine / Beer -->
+                    <div class="liquor-card" onclick="toggleSelection(this, 'beer-wine-brand-container')">
+                        <input type="checkbox" id="type_beer_wine" name="entry.280867174" value="Wine / Beer" onclick="event.stopPropagation(); checkCard(this, 'beer-wine-brand-container')">
+                        <span class="liquor-name">🍺 Wine / Beer</span>
+                        <div class="brand-input-container" id="beer-wine-brand-container" onclick="event.stopPropagation();">
+                            <input type="text" name="entry.1463234572" placeholder="Wine / Beer Brand">
+                        </div>
+                    </div>
+
+                    <!-- Tequila -->
+                    <div class="liquor-card" onclick="toggleSelection(this, 'tequila-brand-container')">
+                        <input type="checkbox" id="type_tequila" name="entry.280867174" value="Tequila" onclick="event.stopPropagation(); checkCard(this, 'tequila-brand-container')">
+                        <span class="liquor-name">🌵 Tequila</span>
+                        <div class="brand-input-container" id="tequila-brand-container" onclick="event.stopPropagation();">
+                            <input type="text" name="entry.656236305" placeholder="Tequila Brand">
+                        </div>
+                    </div>
+
+                    <!-- No Liquor / Soft Drinks Only -->
+                    <div class="liquor-card" onclick="toggleSelection(this, 'soft-drinks-container')">
+                        <input type="checkbox" id="type_soft_drinks" name="entry.280867174" value="No Liquor, Soft Drinks Only" onclick="event.stopPropagation(); checkCard(this, 'soft-drinks-container')">
+                        <span class="liquor-name">🥤 Soft Drinks Only</span>
+                        <div class="brand-input-container" id="soft-drinks-container" onclick="event.stopPropagation();">
+                            <input type="text" name="entry.1550062015" placeholder="Preferred Soft Drink">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other -->
+            <div class="form-group custom-choice-box">
+                <label for="custom_liquor">Other Preference</label>
+                <input type="text" id="custom_liquor" name="entry.280867174" value="" placeholder="Enter another liquor type or preference">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit">Submit Preferences</button>
+            <p class="info-text">Your preferences will sync instantly with the Titans Meet master dashboard.</p>
+        </form>
+    </div>
+
+    <!-- Hidden iframe to prevent page redirection on form submit -->
+    <iframe name="_hidden_iframe" id="_hidden_iframe" style="display:none;" onload="if(submitted) {alert('Thank you! Your preferences have been successfully recorded.'); window.location.reload();}"></iframe>
+
+    <script>
+        let submitted = false;
+        document.getElementById('liquorForm').onsubmit = function() {
+            submitted = true;
+        };
+
+        function toggleSelection(card, containerId) {
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            handleUIChange(card, checkbox.checked, containerId);
+        }
+
+        function checkCard(checkbox, containerId) {
+            const card = checkbox.closest('.liquor-card');
+            handleUIChange(card, checkbox.checked, containerId);
+        }
+
+        function handleUIChange(card, isChecked, containerId) {
+            const brandContainer = document.getElementById(containerId);
+            const brandInput = brandContainer.querySelector('input[type="text"]');
+
+            if (isChecked) {
+                card.classList.add('selected');
+                brandContainer.style.display = 'block';
+                brandInput.required = false;
+            } else {
+                card.classList.remove('selected');
+                brandContainer.style.display = 'none';
+                brandInput.required = false;
+                brandInput.value = '';
+            }
+        }
+    </script>
+</body>
+</html>
